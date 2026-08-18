@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
-  assetPrefix: "/lighthouse01",
+  assetPrefix: "https://comwidme.github.io/lighthouse01",
   trailingSlash: true,
 };
 
