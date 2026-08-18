@@ -33,8 +33,10 @@ jobs:
       - name: Build static site
         run: npm run build
 
-      - name: Verify Pages entry point
-        run: test -f dist/client/index.html
+      - name: Verify Pages output
+        run: |
+          test -f dist/client/index.html
+          test -d dist/client/_next/static
 
       - name: Disable Jekyll processing
         run: touch dist/client/.nojekyll
