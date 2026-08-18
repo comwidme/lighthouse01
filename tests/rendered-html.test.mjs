@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
+
+const clientOutput = fileURLToPath(new URL("../dist/client/", import.meta.url));
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -49,4 +53,15 @@ test("ships site-specific metadata without the starter preview", async () => {
   assert.match(html, /og\.png/);
   assert.match(html, /summary_large_image/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
+});
+
+test("exports assets at the GitHub Pages artifact root", () => {
+  assert.equal(existsSync(`${clientOutput}_next/static`), true);
+  assert.equal(existsSync(`${clientOutput}lighthouse01/_next/static`), false);
+
+  const html = readFileSync(`${clientOutput}index.html`, "utf8");
+  assert.match(
+    html,
+    /https:\/\/comwidme\.github\.io\/lighthouse01\/_next\/static\//,
+  );
 });
